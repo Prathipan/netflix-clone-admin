@@ -1,31 +1,51 @@
 import "./App.css";
-import SideBar from "./components/sidebar/SideBar";
-import TopBar from "./components/topbar/TopBar";
 import Home from "./pages/home/Home";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import UserList from "./pages/userList/UserList";
 import User from "./pages/user/User";
-import NewUser from "./pages/newUser/NewUser";
-import ProductList from "./pages/productList/ProductList";
-import Product from "./pages/product/Product";
-import NewProduct from "./pages/newProduct/NewProduct";
+import MoviesList from "./pages/moviesList/MoviesList";
+import Movie from "./pages/movie/Movie";
+import NewMovie from "./pages/newMovie/NewMovie";
+import Login from "./pages/login/Login";
+import Dashboard from "./pages/Dashboard";
+import { useContext } from "react";
+import { AuthContext } from "./context/authContext/AuthContext";
+import ListsList from "./pages/listList/ListList";
+import List from "./pages/list/List";
+import NewList from "./pages/newList/NewList";
 
 function App() {
+  const { user } = useContext(AuthContext);
   return (
     <Router>
-      <TopBar />
-      <div className="container">
-        <SideBar />
-        <Routes>
-          <Route exact path="/" element={<Home />} />
-          <Route path="/users" element={<UserList />} />
-          <Route path="/user/:userId" element={<User />} />
-          <Route path="/new-user" element={<NewUser />} />
-          <Route path="/products" element={<ProductList />} />
-          <Route path="/product/:productId" element={<Product />} />
-          <Route path="/new-product" element={<NewProduct />} />
-        </Routes>
-      </div>
+      <Routes>
+        <Route
+          path="/login"
+          element={user ? <Navigate to="/portal/home" /> : <Login />}
+        />
+        <Route exact path="/" element={<Navigate to="/login" />} />
+          <>
+            <Route
+              path="/portal"
+              element={!user ? <Navigate to="/login" /> : <Dashboard />}
+            >
+              <Route path="home" element={user ? <Home /> : <Navigate to="/login" />} />
+              <Route path="users" element={<UserList />} />
+              <Route path="user/:userId" element={<User />} />
+              <Route path="movies" element={<MoviesList />} />
+              <Route path="movie/:movieId" element={<Movie />} />
+              <Route path="new-movie" element={<NewMovie />} />
+              <Route path="lists" element={<ListsList />} />
+              <Route path="list/:listId" element={<List />} />
+              <Route path="new-list" element={<NewList />} />
+            </Route>
+          </>
+      </Routes>
     </Router>
   );
 }

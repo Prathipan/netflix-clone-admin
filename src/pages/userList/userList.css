@@ -25,3 +25,8 @@
     color : red;
     cursor: pointer;
 }
+.userHead{
+    display: flex;
+    justify-content: space-between;
+    margin: 20px;
+}

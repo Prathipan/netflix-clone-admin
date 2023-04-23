@@ -7,35 +7,53 @@ import {
   Publish,
 } from "@mui/icons-material";
 import "./user.css";
-import { Link } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
+import { UserContext } from "../../context/userContext/UserContext";
+import { updateUser } from "../../context/userContext/apiCalls";
 
 const User = () => {
+  const location = useLocation();
+  const user = location.state.user;
+  const [editedUser, setEditedUser] = useState({
+    _id : user._id,
+    userName: user.userName,
+    email: user.email,
+    isAdmin: user.isAdmin,
+  });
+  const navigate = useNavigate();
+
+  const {dispatch} = useContext(UserContext);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setEditedUser((prev) => {
+      return { ...prev, [name]: value };
+    });
+  };
+
+  const handleUpdate = (e) => {
+     e.preventDefault();
+     updateUser(editedUser,dispatch);
+     navigate("/portal/users");
+  }
+
   return (
     <div className="user">
-      <div className="userTitleContainer">
-        <h1 className="userTitle">Edit User</h1>
-        <Link to="/new-user">
-          <button className="userAddButton">Create</button>
-        </Link>
-      </div>
       <div className="userContainer">
         <div className="userShow">
           <div className="userShowTop">
-            <img
-              src="https://www.mrdustbin.com/en/wp-content/uploads/2021/05/chris-hemsworth.jpg"
-              alt=""
-              className="userShowImg"
-            />
+            <img src={user.profilePic} alt="" className="userShowImg" />
             <div className="userShowTopTitle">
-              <span className="userShowUsername">Adom Smith</span>
-              <span className="userShowUserTitle">Software Engineer</span>
+              <span className="userShowUsername">{user.userName}</span>
+              <span className="userShowUserTitle">{user.email}</span>
             </div>
           </div>
           <div className="userShowBottom">
             <span className="userShowTitle">Account Details</span>
             <div className="userShowInfo">
               <PermIdentity className="userShowIcon" />
-              <span className="userShowInfoTitle">Adom Smith</span>
+              <span className="userShowInfoTitle">{user.userName}</span>
             </div>
             <div className="userShowInfo">
               <CalendarToday className="userShowIcon" />
@@ -48,7 +66,7 @@ const User = () => {
             </div>
             <div className="userShowInfo">
               <MailOutline className="userShowIcon" />
-              <span className="userShowInfoTitle">adomsmith99@gmail.com</span>
+              <span className="userShowInfoTitle">{user.email}</span>
             </div>
             <div className="userShowInfo">
               <LocationSearching className="userShowIcon" />
@@ -64,25 +82,29 @@ const User = () => {
                 <label>Username</label>
                 <input
                   type="text"
-                  placeholder="AdomSmith99"
-                  className="userUpdateInput"
-                />
-              </div>
-              <div className="userUpdateItem">
-                <label>Full Name</label>
-                <input
-                  type="text"
-                  placeholder="Adom Smith"
+                  name="userName"
+                  value={editedUser.userName}
+                  onChange={handleChange}
                   className="userUpdateInput"
                 />
               </div>
               <div className="userUpdateItem">
                 <label>Email</label>
                 <input
-                  type="text"
-                  placeholder="adomsmith99@gmail.com"
+                  type="email"
+                  name="email"
+                  value={editedUser.email}
+                  onChange={handleChange}
                   className="userUpdateInput"
                 />
+              </div>
+              <div className="userUpdateItem">
+                <label>isAdmin</label>
+                <select name="isAdmin" onChange={handleChange} className="userUpdateInput">
+                  <option>--select--</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
               </div>
               <div className="userUpdateItem">
                 <label>Phone</label>
@@ -103,17 +125,13 @@ const User = () => {
             </div>
             <div className="userUpdateRight">
               <div className="userUpdateUpload">
-                <img
-                  className="userUpdateImg"
-                  src="https://www.mrdustbin.com/en/wp-content/uploads/2021/05/chris-hemsworth.jpg"
-                  alt=""
-                />
+                <img className="userUpdateImg" src={user.profilePic} alt="" />
                 <label htmlFor="file">
                   <Publish className="userUpdateIcon" />
                 </label>
                 <input type="file" id="file" style={{ display: "none" }} />
               </div>
-              <button className="userUpdateButton">Update</button>
+              <button className="userUpdateButton" onClick={handleUpdate}>Update</button>
             </div>
           </form>
         </div>

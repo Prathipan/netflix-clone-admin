@@ -1,16 +1,16 @@
 import {
   BarChart,
   BusinessCenter,
-  CurrencyExchange,
   DynamicFeed,
   Email,
   Info,
-  Inventory,
   LineStyle,
   Message,
   Person2Outlined,
+  PlayCircleOutline,
   Timeline,
   TrendingUp,
+  List,
 } from "@mui/icons-material";
 import "./sidebar.css";
 import { Link } from "react-router-dom";
@@ -22,7 +22,7 @@ const SideBar = () => {
         <div className="sidebarMenu">
           <h3 className="sidebarTitle">Dashboard</h3>
           <ul className="sidebarList">
-            <Link to="/" className="link">
+            <Link to="/portal/home" className="link">
               <li className="sidebarListItem active">
                 <LineStyle className="sidebarIcon" />
                 Home
@@ -41,26 +41,24 @@ const SideBar = () => {
         <div className="sidebarMenu">
           <h3 className="sidebarTitle">Quick Menu</h3>
           <ul className="sidebarList">
-            <Link to="/users" className="link">
+            <Link to="/portal/movies" className="link">
+              <li className="sidebarListItem">
+                <PlayCircleOutline className="sidebarIcon" />
+                Movies
+              </li>
+            </Link>
+            <Link to="/portal/lists" className="link">
+              <li className="sidebarListItem">
+                <List className="sidebarIcon" />
+                Lists
+              </li>
+            </Link>
+            <Link to="/portal/users" className="link">
               <li className="sidebarListItem ">
                 <Person2Outlined className="sidebarIcon" />
                 Users
               </li>
             </Link>
-            <Link to="/products" className="link">
-              <li className="sidebarListItem">
-                <Inventory className="sidebarIcon" />
-                Products
-              </li>
-            </Link>
-            <li className="sidebarListItem">
-              <CurrencyExchange className="sidebarIcon" />
-              Transactions
-            </li>
-            <li className="sidebarListItem">
-              <BarChart className="sidebarIcon" />
-              Reports
-            </li>
           </ul>
         </div>
         <div className="sidebarMenu">
