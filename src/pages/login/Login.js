@@ -3,6 +3,7 @@ import "./login.css";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import { AuthContext } from "../../context/authContext/AuthContext";
 import { login } from "../../context/authContext/apiCalls";
+import { CircularProgress } from "@mui/material";
 
 const Login = () => {
   const [loginDetails, setLoginDetails] = useState({
@@ -10,6 +11,7 @@ const Login = () => {
     setword: "",
   });
   const {isFetching,dispatch} = useContext(AuthContext);
+  console.log(isFetching)
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,7 +23,7 @@ const Login = () => {
   const handleClick = (e) => {
     e.preventDefault();
     setLoginDetails({
-        email : "guest@example.com",
+        email : "admin@gmail.com",
         password : "123456"
     })
   };
@@ -55,10 +57,13 @@ const Login = () => {
               value={loginDetails.password}
               onChange={handleChange}
             />
-            <button className="login-button" onClick={handleSubmit}>
+            {
+              isFetching ? <CircularProgress color="success" /> : <></>
+            }
+            <button className="login-button" onClick={handleSubmit} disabled={isFetching ? true : false}>
               Sign In
             </button>
-            <button onClick={handleClick} className="guestButton" disabled={isFetching}>
+            <button onClick={handleClick} className="guestButton" >
               Sign In with admin credentials
             </button>
           </form>
